@@ -209,6 +209,9 @@ protected:
   FGExternalReactions* ExternalReactions;
   FGBuoyantForces* BuoyantForces;
 
+  bool transmitSimTime;
+  double time_factor;
+
   void Debug(int from);
 };
 }

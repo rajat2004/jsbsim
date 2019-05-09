@@ -243,7 +243,10 @@ void FGOutputFG::SocketDataFill(FGNetFDM* net)
   }
 
   // Environment
-  net->cur_time    = (long int)1234567890;    // Friday, Feb 13, 2009, 23:31:30 UTC (not processed by FGFS anyway)
+  if (transmitSimTime)
+    net->cur_time = static_cast<uint32_t>(FDMExec->GetSimTime() * time_factor);   // simulation time (not processed by FGFS)
+  else
+    net->cur_time    = (long int)1234567890;    // Friday, Feb 13, 2009, 23:31:30 UTC (not processed by FGFS anyway)
   net->warp        = 0;                       // offset in seconds to unix time
   net->visibility  = 25000.0;                 // visibility in meters (for env. effects)
 

@@ -73,6 +73,9 @@ FGOutputType::FGOutputType(FGFDMExec* fdmex) :
   ExternalReactions = FDMExec->GetExternalReactions();
   BuoyantForces = FDMExec->GetBuoyantForces();
 
+  transmitSimTime = false;
+  time_factor = 1e6;
+
   Debug(0);
 }
 
@@ -169,6 +172,17 @@ bool FGOutputType::Load(Element* element)
     outRate = element->GetAttributeValueAsNumber("rate");
 
   SetRateHz(outRate);
+
+  Element *time_element = element->FindElement("time");
+
+  if (time_element) {
+    if (time_element->HasAttribute("type") && (time_element->GetAttributeValue("type") == "simulation")) {
+      transmitSimTime = true;
+
+      if (time_element->HasAttribute("factor"))
+        time_factor = time_element->GetAttributeValueAsNumber("factor");
+    }
+  }
 
   return true;
 }
